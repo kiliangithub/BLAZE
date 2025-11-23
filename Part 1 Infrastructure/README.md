@@ -1,6 +1,6 @@
-This setup show how to easily manage and deploy BCH infrastructure with with one simple command.
+This setup shows how to easily manage and deploy BCH infrastructure with with one simple command.
 
-This will spin up a BCHN node, a fulcrum indexer and a seperate script to automate SSL certificate renewals.
+This will spin up a BCHN node, a Fulcrum indexer and a seperate script to automate SSL certificate renewals.
 
 this only requirement here is having your DNS nameserver set to cloudflare (other options are possible bul will require a bit more changes to the YAML file).
 
