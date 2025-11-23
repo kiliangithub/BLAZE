@@ -1,11 +1,11 @@
 Install docker
 
-  curl -fsSL https://get.docker.com -o get-docker.sh
-  sudo sh get-docker.sh
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
 
 create folder
 
-  mkdir my_app && cd my_app
+    mkdir BCHinfra && cd BCHinfra
 
 paste bchs_with_fulcrum.yaml here
 
@@ -13,7 +13,7 @@ Eddit for your credentials
 
 then deploy the stack:
 
-  docker compose up
+    docker compose up
 
 tadaa!!!
 
