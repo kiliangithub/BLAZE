@@ -15,7 +15,7 @@ create folder
 
     mkdir BCHinfra && cd BCHinfra
 
-paste bchs_with_fulcrum.yaml here
+paste bchn_with_fulcrum.yaml here
 
 Edit for your credentials
 
