@@ -1,0 +1,129 @@
+version: "3.8"
+
+services:
+  bitcoincash:
+    image: zquestz/bitcoin-cash-node:latest
+    container_name: bitcoincash
+    restart: unless-stopped
+    command: >
+      bitcoind
+      -server=1
+      -txindex=1
+      -rpcbind=0.0.0.0
+      -rpcallowip=0.0.0.0/0
+      -rpcuser=bitcoinrpcusername
+      -rpcpassword=choosesecurepassword
+      -dbcache=4096
+      -maxconnections=64
+      -disablewallet
+      -printtoconsole
+    ports:
+      - "8333:8333"
+      - "8332:8332"
+    volumes:
+      - bch_data:/data
+
+  fulcrum:
+    image: cculianu/fulcrum:latest
+    container_name: fulcrum
+    restart: unless-stopped
+    depends_on:
+      - bitcoincash
+      - acme
+    # Wait for the certificate to exist before starting Fulcrum
+    command: >
+      sh -c '
+        echo "[Fulcrum] Waiting for initial certificate...";
+        while [ ! -f /certs/fullchain.pem ]; do
+          sleep 5;
+        done;
+        echo "[Fulcrum] Certificate found. Starting service...";
+        Fulcrum -D /data \
+          --bitcoind=bitcoincash:8332 \
+          --rpcuser=bitcoinrpcusername \
+          --rpcpassword=chooosesecurepassword \
+          --tcp=0.0.0.0:50001 \
+          --ssl=0.0.0.0:50002 \
+          --polltime=0.5 \
+          --cert=/certs/fullchain.pem \
+          --key=/certs/privkey.pem
+      '
+    ports:
+      - "50001:50001"
+      - "50002:50002"
+    volumes:
+      - fulcrum_data:/data
+      - certs:/certs:ro
+
+  acme:
+    image: certbot/dns-cloudflare:latest
+    container_name: acme
+    restart: unless-stopped
+    environment:
+      CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
+      CERT_DOMAIN: "${CERT_DOMAIN}"
+      CERT_EMAIL: "${CERT_EMAIL}"
+    volumes:
+      - certs:/certs
+      - acme_data:/etc/letsencrypt
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        set -eu
+        echo "[ACME] Creating Cloudflare credentials file..."
+        echo "dns_cloudflare_api_token = $CLOUDFLARE_API_TOKEN" > /tmp/cloudflare.ini
+        chmod 600 /tmp/cloudflare.ini
+
+        if [ -z "${CERT_DOMAIN:-}" ]; then
+          echo "[!] CERT_DOMAIN not set" >&2; exit 1
+        fi
+        if [ -z "${CERT_EMAIL:-}" ]; then
+          echo "[!] CERT_EMAIL not set" >&2; exit 1
+        fi
+
+        echo "[ACME] Requesting initial certificate for $CERT_DOMAIN ..."
+        certbot certonly \
+          --dns-cloudflare \
+          --dns-cloudflare-credentials /tmp/cloudflare.ini \
+          --agree-tos \
+          --email "$CERT_EMAIL" \
+          --non-interactive \
+          --keep-until-expiring \
+          --server https://acme-v02.api.letsencrypt.org/directory \
+          -d "$CERT_DOMAIN"
+
+        echo "[ACME] Copying certificates to shared volume..."
+        mkdir -p /certs
+        cp -L /etc/letsencrypt/live/$CERT_DOMAIN/fullchain.pem /certs/fullchain.pem
+        cp -L /etc/letsencrypt/live/$CERT_DOMAIN/privkey.pem   /certs/privkey.pem
+        chmod 644 /certs/*.pem
+
+        echo "[✓] Initial certificate obtained. Entering renewal loop."
+
+        while true; do
+          echo "[ACME] Checking certificate renewals at $(date)..."
+          certbot renew \
+            --dns-cloudflare \
+            --dns-cloudflare-credentials /tmp/cloudflare.ini \
+            --quiet || true
+
+          if [ -f "/etc/letsencrypt/live/$CERT_DOMAIN/fullchain.pem" ]; then
+            cp -L /etc/letsencrypt/live/$CERT_DOMAIN/fullchain.pem /certs/fullchain.pem
+            cp -L /etc/letsencrypt/live/$CERT_DOMAIN/privkey.pem   /certs/privkey.pem
+            chmod 644 /certs/*.pem
+            echo "[ACME] Certificates refreshed at $(date)"
+
+            # Tell Fulcrum to reload certificates without restart
+            docker exec fulcrum pkill -HUP Fulcrum || true
+          fi
+
+          echo "[ACME] Sleeping 24h before next check..."
+          sleep 24h
+        done
+
+volumes:
+  bch_data:
+  fulcrum_data:
+  certs:
+  acme_data:

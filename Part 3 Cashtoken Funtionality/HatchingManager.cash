@@ -1,0 +1,184 @@
+pragma cashscript ^0.13.0;
+
+/*  --- HatchingManager Mutable NFT State ---
+    bytes4 lockId = 0x00000001                           // Sequential lock ID, incremented with each hatching operation
+    bytes20 creatorPkh = 0x0000000000000000000000000000000000000000  // Creator's public key hash for unlock authorization
+*/
+
+contract HatchingManager(bytes32 chickenTokenCategory, bytes32 lockTokenCategory) {
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //  Initialize a hatching manager position by locking a minting-capable chicken NFT. 
+    //  Creates a hatching manager NFT commitment containing lock ID 1 and the creator's PKH.
+    //
+    //inputs:
+    //  0       creatorBCH              [BCH]       (from creator)
+    //  1       mintingNFT              [NFT]       (from creator)
+    //outputs:
+    //  0       hatchingManagerNFT      [NFT]       (to HatchingManager contract)
+    //  1       change {optional}       [BCH]       (to creator)
+    //////////////////////////////////////////////////////////////////////////////////////////
+    function lockHatchingManagerNFT(bytes20 creatorPkh) {
+        require(tx.inputs.length == 2);
+        require(tx.outputs.length >= 1);
+        require(tx.outputs.length <= 2);
+        
+        require(tx.inputs[0].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh));
+        require(tx.inputs[0].tokenCategory == 0x);
+        
+        bytes32 mintCategory, bytes capability = tx.inputs[1].tokenCategory.split(32);
+        require(mintCategory == chickenTokenCategory);
+        require(capability == 0x02);
+        require(tx.inputs[1].value >= 1000);
+        
+        require(tx.outputs[0].lockingBytecode == this.activeBytecode);
+        require(tx.outputs[0].tokenCategory == tx.inputs[1].tokenCategory);
+        require(tx.outputs[0].nftCommitment == 0x00000001 + creatorPkh);
+        require(tx.outputs[0].value == tx.inputs[1].value);
+        require(tx.outputs[0].tokenAmount == 0);
+        
+        if (tx.outputs.length == 2) {
+            require(tx.outputs[1].lockingBytecode == tx.inputs[0].lockingBytecode);
+            require(tx.outputs[1].tokenCategory == 0x);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //  Attempt to breed chicken NFTs by burning locked egg tokens after the breeding period.
+    //  Each egg has independent 1-in-24 (4.167%) chance of success based on deterministic
+    //  randomness from the lock transaction hash. Requires signature from destination address.
+    //
+    //inputs:
+    //  0   hatchingManagerNFT        [NFT]       (from HatchingManager contract)
+    //  1   lockPositionNFT           [NFT+FT]    (from BreedManager contract)
+    //  2   destinationBCH            [BCH]       (from destination address)
+    //outputs:
+    //  0   hatchingManagerNFT        [NFT]       (to HatchingManager contract)
+    //  1-N chickenNFT(s)             [NFT]       (to destination address)
+    //  N+1 breederBCH                [BCH]       (to destination address)
+    //////////////////////////////////////////////////////////////////////////////////////////
+    function hatchEggs(sig destinationSig, pubkey destinationPk) {
+        require(this.activeInputIndex == 1); // lockPositionNFT must be input 1
+        require(tx.inputs.length == 3);
+
+        // Validate hatchingManager NFT has minting capability for chicken NFTs
+        bytes32 tokenCat, bytes capability = tx.inputs[0].tokenCategory.split(32);
+        require(tokenCat == chickenTokenCategory);
+        require(capability == 0x02); 
+        
+        // Validate LockPositionNFT is mutable NFT
+        bytes32 tokenCat2, bytes capability2 = tx.inputs[1].tokenCategory.split(32);
+        require(tokenCat2 == lockTokenCategory);
+        require(capability2 == 0x01);
+
+        // Extract number of eggs locked with this position
+        int eggAmount = tx.inputs[1].tokenAmount;
+        require(eggAmount > 0);
+
+        // Extract and increment lock ID for hatchingManagerNFT
+        bytes4 currentLockId = bytes4(tx.inputs[0].nftCommitment.split(4)[0]);
+        bytes20 creatorPkh = bytes20(tx.inputs[0].nftCommitment.split(4)[1]);
+        
+        int nextId = int(currentLockId) + 1;
+        require(nextId <= 2147483647);
+        
+        // Recreate hatchingManagerNFT with incremented lock ID as output 0
+        require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+        require(tx.outputs[0].tokenCategory == tx.inputs[0].tokenCategory);
+        require(tx.outputs[0].nftCommitment == bytes4(nextId) + creatorPkh);
+        require(tx.outputs[0].value == tx.inputs[0].value);
+        require(tx.outputs[0].tokenAmount == 0);
+        
+        // Extract destination PKH and lock block from NFT commitment
+        bytes20 destinationPkh = bytes20(tx.inputs[1].nftCommitment.split(20)[0]);
+        
+        // Validate signature from authorized destination address
+        require(hash160(bytes(destinationPk)) == destinationPkh);
+        require(checkSig(destinationSig, destinationPk));
+        
+        // Enforce breeding time window (21-31 days = 3024-4464 blocks)
+            // Now this.age refers to the lockPositionNFT's age
+        require(this.age >= 3024);  // Minimum breeding time (21 days)
+
+        
+        // Get deterministic randomness from lock transaction hash
+        bytes32 randomSource = tx.inputs[1].outpointTransactionHash;
+        
+        // Process each egg and validate successful hatches
+        // Start chicken NFT outputs at index 1 (after hatchingManagerNFT at index 0)
+        int outputIndex = 1;
+        int eggIndex = 0;
+        
+        do {
+            // Use different byte from randomSource for each egg (cycling every 32)
+            int bytePosition = eggIndex % 32;
+            bytes relevantByte = randomSource.split(bytePosition)[1].split(1)[0];
+            int randomValue = int(relevantByte);
+            int result = randomValue % 24;
+            
+            // 1-in-24 chance: if remainder is 0, egg hatches successfully
+            if (result == 0) {
+                // Validate chicken NFT output immediately
+                require(tx.outputs[outputIndex].lockingBytecode == new LockingBytecodeP2PKH(destinationPkh));
+                require(tx.outputs[outputIndex].tokenCategory == chickenTokenCategory + 0x00);  // Immutable chicken NFT
+                require(tx.outputs[outputIndex].value == 1000);  // Dust for NFT
+                require(tx.outputs[outputIndex].tokenAmount == 0);  // No fungible tokens
+                
+                // Create unique commitment: first 8 bytes of randomSource + egg index
+                bytes nftCommitment = randomSource.split(8)[0] + bytes4(eggIndex);
+                require(tx.outputs[outputIndex].nftCommitment == nftCommitment);
+                
+                outputIndex = outputIndex + 1;  // Increment for next successful egg
+            }
+            
+            eggIndex = eggIndex + 1;
+        } while (eggIndex < eggAmount);
+        
+        // Validate total output count: hatchingManagerNFT + successful eggs + BCH return
+        require(tx.outputs.length == outputIndex + 1);
+        
+        // Final output is BCH return to destination address
+        require(tx.outputs[outputIndex].lockingBytecode == tx.inputs[2].lockingBytecode);
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //  Release the hatching manager NFT back to the original creator, ending the hatching
+    //  manager position. Only the creator whose PKH is in the NFT commitment can unlock.
+    //
+    //inputs:
+    //  0   hatchingManagerNFT        [NFT]       (from HatchingManager contract)
+    //  1   creatorBCH                [BCH]       (from creator)
+    //outputs:
+    //  0   chickenMintingNFT         [NFT]       (to creator)
+    //  1   change {optional}         [BCH]       (to creator)
+    //////////////////////////////////////////////////////////////////////////////////////////
+    function unlockHatchingManagerNFT() {
+        // Validate exact transaction structure
+        require(tx.inputs.length == 2);
+        require(tx.outputs.length >= 1);
+        require(tx.outputs.length <= 2);
+        
+        // Verify input 0 is hatching manager NFT with minting capability
+        bytes32 mintCategory, bytes capability = tx.inputs[0].tokenCategory.split(32);
+        require(mintCategory == chickenTokenCategory);
+        require(capability == 0x02); // Must have minting capability
+        
+        // Extract creator PKH from NFT commitment for authorization
+        bytes20 creatorPkh = bytes20(tx.inputs[0].nftCommitment.split(4)[1]);
+        require(tx.inputs[1].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh)); // Creator must provide input
+        require(tx.inputs[1].tokenCategory == 0x);
+        
+        // Return chicken minting NFT to creator's P2PKH address
+        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh));
+        require(tx.outputs[0].tokenCategory == tx.inputs[0].tokenCategory); // Preserve minting capability
+        require(tx.outputs[0].value >= 1000); // Minimum dust for token UTXO
+        require(tx.outputs[0].tokenAmount == 0);
+        
+        // Optional change output to creator
+        if (tx.outputs.length == 2) {
+            require(tx.outputs[1].lockingBytecode == tx.inputs[1].lockingBytecode);
+            require(tx.outputs[1].tokenCategory == 0x);
+        }
+    }
+}

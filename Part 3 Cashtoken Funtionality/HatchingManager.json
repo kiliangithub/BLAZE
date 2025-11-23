@@ -1,0 +1,259 @@
+{
+    "contractName": "HatchingManager",
+    "constructorInputs": [
+      {
+        "name": "chickenTokenCategory",
+        "type": "bytes32"
+      },
+      {
+        "name": "lockTokenCategory",
+        "type": "bytes32"
+      }
+    ],
+    "abi": [
+      {
+        "name": "lockHatchingManagerNFT",
+        "inputs": [
+          {
+            "name": "creatorPkh",
+            "type": "bytes20"
+          }
+        ]
+      },
+      {
+        "name": "hatchEggs",
+        "inputs": [
+          {
+            "name": "destinationSig",
+            "type": "sig"
+          },
+          {
+            "name": "destinationPk",
+            "type": "pubkey"
+          }
+        ]
+      },
+      {
+        "name": "unlockHatchingManagerNFT",
+        "inputs": []
+      }
+    ],
+    "bytecode": "OP_2 OP_PICK OP_0 OP_NUMEQUAL OP_IF OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_1 OP_GREATERTHANOREQUAL OP_VERIFY OP_TXOUTPUTCOUNT OP_2 OP_LESSTHANOREQUAL OP_VERIFY OP_0 OP_UTXOBYTECODE 76a914 OP_5 OP_PICK OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_0 OP_UTXOTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_1 OP_UTXOTOKENCATEGORY 20 OP_SPLIT OP_SWAP OP_ROT OP_EQUALVERIFY OP_2 OP_EQUALVERIFY OP_1 OP_UTXOVALUE e803 OP_GREATERTHANOREQUAL OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_ACTIVEBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_1 OP_UTXOTOKENCATEGORY OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCOMMITMENT 00000001 OP_4 OP_ROLL OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_1 OP_UTXOVALUE OP_NUMEQUALVERIFY OP_0 OP_OUTPUTTOKENAMOUNT OP_0 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_2 OP_NUMEQUAL OP_IF OP_1 OP_OUTPUTBYTECODE OP_0 OP_UTXOBYTECODE OP_EQUALVERIFY OP_1 OP_OUTPUTTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_ENDIF OP_2DROP OP_1 OP_ELSE OP_2 OP_PICK OP_1 OP_NUMEQUAL OP_IF OP_INPUTINDEX OP_1 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_3 OP_NUMEQUALVERIFY OP_0 OP_UTXOTOKENCATEGORY 20 OP_SPLIT OP_SWAP OP_2 OP_PICK OP_EQUALVERIFY OP_2 OP_EQUALVERIFY OP_1 OP_UTXOTOKENCATEGORY 20 OP_SPLIT OP_SWAP OP_3 OP_ROLL OP_EQUALVERIFY OP_1 OP_EQUALVERIFY OP_1 OP_UTXOTOKENAMOUNT OP_DUP OP_0 OP_GREATERTHAN OP_VERIFY OP_0 OP_UTXOTOKENCOMMITMENT OP_4 OP_SPLIT OP_DROP OP_0 OP_UTXOTOKENCOMMITMENT OP_4 OP_SPLIT OP_NIP OP_SWAP OP_BIN2NUM OP_1ADD OP_DUP ffffff7f OP_LESSTHANOREQUAL OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_0 OP_UTXOBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_0 OP_UTXOTOKENCATEGORY OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCOMMITMENT OP_SWAP OP_4 OP_NUM2BIN OP_ROT OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE OP_NUMEQUALVERIFY OP_0 OP_OUTPUTTOKENAMOUNT OP_0 OP_NUMEQUALVERIFY OP_1 OP_UTXOTOKENCOMMITMENT 14 OP_SPLIT OP_DROP OP_5 OP_PICK OP_HASH160 OP_OVER OP_EQUALVERIFY OP_2ROT OP_SWAP OP_CHECKSIGVERIFY d00b OP_CHECKSEQUENCEVERIFY OP_DROP OP_1 OP_OUTPOINTTXHASH OP_1 OP_0 OP_BEGIN OP_DUP 20 OP_MOD OP_3 OP_PICK OP_OVER OP_SPLIT OP_NIP OP_1 OP_SPLIT OP_DROP OP_DUP OP_BIN2NUM OP_DUP 18 OP_MOD OP_DUP OP_0 OP_NUMEQUAL OP_IF OP_5 OP_PICK OP_OUTPUTBYTECODE 76a914 OP_9 OP_PICK OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_5 OP_PICK OP_OUTPUTTOKENCATEGORY OP_10 OP_PICK 00 OP_CAT OP_EQUALVERIFY OP_5 OP_PICK OP_OUTPUTVALUE e803 OP_NUMEQUALVERIFY OP_5 OP_PICK OP_OUTPUTTOKENAMOUNT OP_0 OP_NUMEQUALVERIFY OP_6 OP_PICK OP_8 OP_SPLIT OP_DROP OP_5 OP_PICK OP_4 OP_NUM2BIN OP_CAT OP_6 OP_PICK OP_OUTPUTTOKENCOMMITMENT OP_OVER OP_EQUALVERIFY OP_6 OP_PICK OP_1ADD OP_7 OP_ROLL OP_DROP OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_FROMALTSTACK OP_FROMALTSTACK OP_FROMALTSTACK OP_FROMALTSTACK OP_FROMALTSTACK OP_DROP OP_ENDIF OP_4 OP_PICK OP_1ADD OP_5 OP_ROLL OP_DROP OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_TOALTSTACK OP_SWAP OP_FROMALTSTACK OP_FROMALTSTACK OP_FROMALTSTACK OP_2DROP OP_2DROP OP_DUP OP_5 OP_PICK OP_GREATERTHANOREQUAL OP_UNTIL OP_TXOUTPUTCOUNT OP_2 OP_PICK OP_1ADD OP_NUMEQUALVERIFY OP_SWAP OP_OUTPUTBYTECODE OP_2 OP_UTXOBYTECODE OP_EQUALVERIFY OP_2DROP OP_2DROP OP_2DROP OP_1 OP_ELSE OP_ROT OP_2 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_1 OP_GREATERTHANOREQUAL OP_VERIFY OP_TXOUTPUTCOUNT OP_2 OP_LESSTHANOREQUAL OP_VERIFY OP_0 OP_UTXOTOKENCATEGORY 20 OP_SPLIT OP_SWAP OP_ROT OP_EQUALVERIFY OP_2 OP_EQUALVERIFY OP_0 OP_UTXOTOKENCOMMITMENT OP_4 OP_SPLIT OP_NIP OP_1 OP_UTXOBYTECODE 76a914 OP_2 OP_PICK OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_1 OP_UTXOTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_0 OP_OUTPUTBYTECODE 76a914 OP_ROT OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_0 OP_UTXOTOKENCATEGORY OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE e803 OP_GREATERTHANOREQUAL OP_VERIFY OP_0 OP_OUTPUTTOKENAMOUNT OP_0 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_2 OP_NUMEQUAL OP_IF OP_1 OP_OUTPUTBYTECODE OP_1 OP_UTXOBYTECODE OP_EQUALVERIFY OP_1 OP_OUTPUTTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_ENDIF OP_DROP OP_1 OP_ENDIF OP_ENDIF",
+    "source": "pragma cashscript ^0.13.0;\n\n/*  --- HatchingManager Mutable NFT State ---\n    bytes4 lockId = 0x00000001                           // Sequential lock ID, incremented with each hatching operation\n    bytes20 creatorPkh = 0x0000000000000000000000000000000000000000  // Creator's public key hash for unlock authorization\n*/\n\ncontract HatchingManager(bytes32 chickenTokenCategory, bytes32 lockTokenCategory) {\n\n\n    //////////////////////////////////////////////////////////////////////////////////////////\n    //  Initialize a hatching manager position by locking a minting-capable chicken NFT. \n    //  Creates a hatching manager NFT commitment containing lock ID 1 and the creator's PKH.\n    //\n    //inputs:\n    //  0       creatorBCH              [BCH]       (from creator)\n    //  1       mintingNFT              [NFT]       (from creator)\n    //outputs:\n    //  0       hatchingManagerNFT      [NFT]       (to HatchingManager contract)\n    //  1       change {optional}       [BCH]       (to creator)\n    //////////////////////////////////////////////////////////////////////////////////////////\n    function lockHatchingManagerNFT(bytes20 creatorPkh) {\n        require(tx.inputs.length == 2);\n        require(tx.outputs.length >= 1);\n        require(tx.outputs.length <= 2);\n        \n        require(tx.inputs[0].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh));\n        require(tx.inputs[0].tokenCategory == 0x);\n        \n        bytes32 mintCategory, bytes capability = tx.inputs[1].tokenCategory.split(32);\n        require(mintCategory == chickenTokenCategory);\n        require(capability == 0x02);\n        require(tx.inputs[1].value >= 1000);\n        \n        require(tx.outputs[0].lockingBytecode == this.activeBytecode);\n        require(tx.outputs[0].tokenCategory == tx.inputs[1].tokenCategory);\n        require(tx.outputs[0].nftCommitment == 0x00000001 + creatorPkh);\n        require(tx.outputs[0].value == tx.inputs[1].value);\n        require(tx.outputs[0].tokenAmount == 0);\n        \n        if (tx.outputs.length == 2) {\n            require(tx.outputs[1].lockingBytecode == tx.inputs[0].lockingBytecode);\n            require(tx.outputs[1].tokenCategory == 0x);\n        }\n    }\n    \n    //////////////////////////////////////////////////////////////////////////////////////////\n    //  Attempt to breed chicken NFTs by burning locked egg tokens after the breeding period.\n    //  Each egg has independent 1-in-24 (4.167%) chance of success based on deterministic\n    //  randomness from the lock transaction hash. Requires signature from destination address.\n    //\n    //inputs:\n    //  0   hatchingManagerNFT        [NFT]       (from HatchingManager contract)\n    //  1   lockPositionNFT           [NFT+FT]    (from BreedManager contract)\n    //  2   destinationBCH            [BCH]       (from destination address)\n    //outputs:\n    //  0   hatchingManagerNFT        [NFT]       (to HatchingManager contract)\n    //  1-N chickenNFT(s)             [NFT]       (to destination address)\n    //  N+1 breederBCH                [BCH]       (to destination address)\n    //////////////////////////////////////////////////////////////////////////////////////////\n    function hatchEggs(sig destinationSig, pubkey destinationPk) {\n        require(this.activeInputIndex == 1); // lockPositionNFT must be input 1\n        require(tx.inputs.length == 3);\n\n        // Validate hatchingManager NFT has minting capability for chicken NFTs\n        bytes32 tokenCat, bytes capability = tx.inputs[0].tokenCategory.split(32);\n        require(tokenCat == chickenTokenCategory);\n        require(capability == 0x02); \n        \n        // Validate LockPositionNFT is mutable NFT\n        bytes32 tokenCat2, bytes capability2 = tx.inputs[1].tokenCategory.split(32);\n        require(tokenCat2 == lockTokenCategory);\n        require(capability2 == 0x01);\n\n        // Extract number of eggs locked with this position\n        int eggAmount = tx.inputs[1].tokenAmount;\n        require(eggAmount > 0);\n\n        // Extract and increment lock ID for hatchingManagerNFT\n        bytes4 currentLockId = bytes4(tx.inputs[0].nftCommitment.split(4)[0]);\n        bytes20 creatorPkh = bytes20(tx.inputs[0].nftCommitment.split(4)[1]);\n        \n        int nextId = int(currentLockId) + 1;\n        require(nextId <= 2147483647);\n        \n        // Recreate hatchingManagerNFT with incremented lock ID as output 0\n        require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);\n        require(tx.outputs[0].tokenCategory == tx.inputs[0].tokenCategory);\n        require(tx.outputs[0].nftCommitment == bytes4(nextId) + creatorPkh);\n        require(tx.outputs[0].value == tx.inputs[0].value);\n        require(tx.outputs[0].tokenAmount == 0);\n        \n        // Extract destination PKH and lock block from NFT commitment\n        bytes20 destinationPkh = bytes20(tx.inputs[1].nftCommitment.split(20)[0]);\n        \n        // Validate signature from authorized destination address\n        require(hash160(bytes(destinationPk)) == destinationPkh);\n        require(checkSig(destinationSig, destinationPk));\n        \n        // Enforce breeding time window (21-31 days = 3024-4464 blocks)\n            // Now this.age refers to the lockPositionNFT's age\n        require(this.age >= 3024);  // Minimum breeding time (21 days)\n\n        \n        // Get deterministic randomness from lock transaction hash\n        bytes32 randomSource = tx.inputs[1].outpointTransactionHash;\n        \n        // Process each egg and validate successful hatches\n        // Start chicken NFT outputs at index 1 (after hatchingManagerNFT at index 0)\n        int outputIndex = 1;\n        int eggIndex = 0;\n        \n        do {\n            // Use different byte from randomSource for each egg (cycling every 32)\n            int bytePosition = eggIndex % 32;\n            bytes relevantByte = randomSource.split(bytePosition)[1].split(1)[0];\n            int randomValue = int(relevantByte);\n            int result = randomValue % 24;\n            \n            // 1-in-24 chance: if remainder is 0, egg hatches successfully\n            if (result == 0) {\n                // Validate chicken NFT output immediately\n                require(tx.outputs[outputIndex].lockingBytecode == new LockingBytecodeP2PKH(destinationPkh));\n                require(tx.outputs[outputIndex].tokenCategory == chickenTokenCategory + 0x00);  // Immutable chicken NFT\n                require(tx.outputs[outputIndex].value == 1000);  // Dust for NFT\n                require(tx.outputs[outputIndex].tokenAmount == 0);  // No fungible tokens\n                \n                // Create unique commitment: first 8 bytes of randomSource + egg index\n                bytes nftCommitment = randomSource.split(8)[0] + bytes4(eggIndex);\n                require(tx.outputs[outputIndex].nftCommitment == nftCommitment);\n                \n                outputIndex = outputIndex + 1;  // Increment for next successful egg\n            }\n            \n            eggIndex = eggIndex + 1;\n        } while (eggIndex < eggAmount);\n        \n        // Validate total output count: hatchingManagerNFT + successful eggs + BCH return\n        require(tx.outputs.length == outputIndex + 1);\n        \n        // Final output is BCH return to destination address\n        require(tx.outputs[outputIndex].lockingBytecode == tx.inputs[2].lockingBytecode);\n    }\n    \n    //////////////////////////////////////////////////////////////////////////////////////////\n    //  Release the hatching manager NFT back to the original creator, ending the hatching\n    //  manager position. Only the creator whose PKH is in the NFT commitment can unlock.\n    //\n    //inputs:\n    //  0   hatchingManagerNFT        [NFT]       (from HatchingManager contract)\n    //  1   creatorBCH                [BCH]       (from creator)\n    //outputs:\n    //  0   chickenMintingNFT         [NFT]       (to creator)\n    //  1   change {optional}         [BCH]       (to creator)\n    //////////////////////////////////////////////////////////////////////////////////////////\n    function unlockHatchingManagerNFT() {\n        // Validate exact transaction structure\n        require(tx.inputs.length == 2);\n        require(tx.outputs.length >= 1);\n        require(tx.outputs.length <= 2);\n        \n        // Verify input 0 is hatching manager NFT with minting capability\n        bytes32 mintCategory, bytes capability = tx.inputs[0].tokenCategory.split(32);\n        require(mintCategory == chickenTokenCategory);\n        require(capability == 0x02); // Must have minting capability\n        \n        // Extract creator PKH from NFT commitment for authorization\n        bytes20 creatorPkh = bytes20(tx.inputs[0].nftCommitment.split(4)[1]);\n        require(tx.inputs[1].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh)); // Creator must provide input\n        require(tx.inputs[1].tokenCategory == 0x);\n        \n        // Return chicken minting NFT to creator's P2PKH address\n        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(creatorPkh));\n        require(tx.outputs[0].tokenCategory == tx.inputs[0].tokenCategory); // Preserve minting capability\n        require(tx.outputs[0].value >= 1000); // Minimum dust for token UTXO\n        require(tx.outputs[0].tokenAmount == 0);\n        \n        // Optional change output to creator\n        if (tx.outputs.length == 2) {\n            require(tx.outputs[1].lockingBytecode == tx.inputs[1].lockingBytecode);\n            require(tx.outputs[1].tokenCategory == 0x);\n        }\n    }\n}",
+    "debug": {
+      "bytecode": "5279009c63c3529dc451a269c452a16900c70376a91455797e0288ac7e8800ce008851ce01207f7c7b88528851c602e803a26900cdc18800d151ce8800d20400000001547a7e8800cc51c69d00d3009dc4529c6351cd00c78851d10088686d51675279519c63c0519dc3539d00ce01207f7c527988528851ce01207f7c537a88518851d07600a06900cf547f7500cf547f777c818b7604ffffff7fa16900cd00c78800d100ce8800d27c54807b7e8800cc00c69d00d3009d51cf01147f755579a97888717cad02d00bb27551c8510065760120975379787f77517f7576817601189776009c635579cd0376a91459797e0288ac7e885579d15a7901007e885579cc02e8039d5579d3009d5679587f75557954807e5679d2788856798b577a757c6b7c6b7c6b7c6b7c6b7c6c6c6c6c6c756854798b557a757c6b7c6b7c6b7c6c6c6c6d6d765579a266c452798b9d7ccd52c7886d6d6d51677b529dc3529dc451a269c452a16900ce01207f7c7b88528800cf547f7751c70376a91452797e0288ac7e8851ce008800cd0376a9147b7e0288ac7e8800d100ce8800cc02e803a26900d3009dc4529c6351cd51c78851d100886875516868",
+      "sourceMap": "22:4:45:5;;;;;23:16:23:32;:36::37;:8::39:1;24:16:24:33:0;:37::38;:16:::1;:8::40;25:16:25:33:0;:37::38;:16:::1;:8::40;27:26:27:27:0;:16::44:1;:48::84:0;:73::83;;:48::84:1;;;:8::86;28:26:28:27:0;:16::42:1;:46::48:0;:8::50:1;30:59:30:60:0;:49::75:1;:82::84:0;:49::85:1;31:16:31:28:0;:32::52;:8::54:1;32:30:32:34:0;:8::36:1;33:26:33:27:0;:16::34:1;:38::42:0;:16:::1;:8::44;35:27:35:28:0;:16::45:1;:49::68:0;:8::70:1;36:27:36:28:0;:16::43:1;:57::58:0;:47::73:1;:8::75;37:27:37:28:0;:16::43:1;:47::57:0;:60::70;;:47:::1;:8::72;38:27:38:28:0;:16::35:1;:49::50:0;:39::57:1;:8::59;39:27:39:28:0;:16::41:1;:45::46:0;:8::48:1;41:12:41:29:0;:33::34;:12:::1;:36:44:9:0;42:31:42:32;:20::49:1;:63::64:0;:53::81:1;:12::83;43:31:43:32:0;:20::47:1;:51::53:0;:12::55:1;41:36:44:9;22:4:45:5;;;61::143::0;;;;;62:16:62:37;:41::42;:8::44:1;63:16:63:32:0;:36::37;:8::39:1;66:55:66:56:0;:45::71:1;:78::80:0;:45::81:1;67:16:67:24:0;:28::48;;:8::50:1;68:30:68:34:0;:8::36:1;71:57:71:58:0;:47::73:1;:80::82:0;:47::83:1;72:16:72:25:0;:29::46;;:8::48:1;73:31:73:35:0;:8::37:1;76:34:76:35:0;:24::48:1;77:16:77:25:0;:28::29;:16:::1;:8::31;80:48:80:49:0;:38::64:1;:71::72:0;:38::73:1;:::76;81:47:81:48:0;:37::63:1;:70::71:0;:37::72:1;:::75;83:25:83:38:0;:21::39:1;:::43;84:16:84:22:0;:26::36;:16:::1;:8::38;87:27:87:28:0;:16::45:1;:59::60:0;:49::77:1;:8::79;88:27:88:28:0;:16::43:1;:57::58:0;:47::73:1;:8::75;89:27:89:28:0;:16::43:1;:54::60:0;:47::61:1;;:64::74:0;:47:::1;:8::76;90:27:90:28:0;:16::35:1;:49::50:0;:39::57:1;:8::59;91:27:91:28:0;:16::41:1;:45::46:0;:8::48:1;94:51:94:52:0;:41::67:1;:74::76:0;:41::77:1;:::80;97:30:97:43:0;;:16::45:1;:49::63:0;:8::65:1;98:25:98:54:0;;:8::57:1;102:28:102:32:0;:8::34:1;;106:41:106:42:0;:31::67:1;110:26:110:27:0;111:23:111:24;113:8:136:39;115:31:115;:42::44;:31:::1;116:33:116:45:0;;:52::64;:33::65:1;:::68;:75::76:0;:33::77:1;:::80;117:34:117:46:0;:30::47:1;118:25:118:36:0;:39::41;:25:::1;121:16:121:22:0;:26::27;:16:::1;:29:133:13:0;123:35:123:46;;:24::63:1;:67::107:0;:92::106;;:67::107:1;;;:16::109;124:35:124:46:0;;:24::61:1;:65::85:0;;:88::92;:65:::1;:16::94;125:35:125:46:0;;:24::53:1;:57::61:0;:16::63:1;126:35:126:46:0;;:24::59:1;:63::64:0;:16::66:1;129:38:129:50:0;;:57::58;:38::59:1;:::62;:72::80:0;;:65::81:1;;:38;130:35:130:46:0;;:24::61:1;:65::78:0;:16::80:1;132:30:132:41:0;;:::45:1;:16::46;;;;;;;;;;;;;;;;;;;121:29:133:13;;135:23:135:31:0;;:::35:1;:12::36;;;;;;;;;;;;;113:11:136:9;;136:17::25:0;:28::37;;113:8::39:1;;139:16:139:33:0;:37::48;;:::52:1;:8::54;142:27:142:38:0;:16::55:1;:69::70:0;:59::87:1;:8::89;61:4:143:5;;;;;156::183::0;;;158:16:158:32;:36::37;:8::39:1;159:16:159:33:0;:37::38;:16:::1;:8::40;160:16:160:33:0;:37::38;:16:::1;:8::40;163:59:163:60:0;:49::75:1;:82::84:0;:49::85:1;164:16:164:28:0;:32::52;:8::54:1;165:30:165:34:0;:8::36:1;168:47:168:48:0;:37::63:1;:70::71:0;:37::72:1;:::75;169:26:169:27:0;:16::44:1;:48::84:0;:73::83;;:48::84:1;;;:8::86;170:26:170:27:0;:16::42:1;:46::48:0;:8::50:1;173:27:173:28:0;:16::45:1;:49::85:0;:74::84;:49::85:1;;;:8::87;174:27:174:28:0;:16::43:1;:57::58:0;:47::73:1;:8::75;175:27:175:28:0;:16::35:1;:39::43:0;:16:::1;:8::45;176:27:176:28:0;:16::41:1;:45::46:0;:8::48:1;179:12:179:29:0;:33::34;:12:::1;:36:182:9:0;180:31:180:32;:20::49:1;:63::64:0;:53::81:1;:12::83;181:31:181:32:0;:20::47:1;:51::53:0;:12::55:1;179:36:182:9;156:4:183:5;;8:0:184:1;",
+      "logs": [],
+      "requires": [
+        {
+          "ip": 9,
+          "line": 23
+        },
+        {
+          "ip": 13,
+          "line": 24
+        },
+        {
+          "ip": 17,
+          "line": 25
+        },
+        {
+          "ip": 26,
+          "line": 27
+        },
+        {
+          "ip": 30,
+          "line": 28
+        },
+        {
+          "ip": 37,
+          "line": 31
+        },
+        {
+          "ip": 39,
+          "line": 32
+        },
+        {
+          "ip": 44,
+          "line": 33
+        },
+        {
+          "ip": 48,
+          "line": 35
+        },
+        {
+          "ip": 53,
+          "line": 36
+        },
+        {
+          "ip": 60,
+          "line": 37
+        },
+        {
+          "ip": 65,
+          "line": 38
+        },
+        {
+          "ip": 69,
+          "line": 39
+        },
+        {
+          "ip": 78,
+          "line": 42
+        },
+        {
+          "ip": 82,
+          "line": 43
+        },
+        {
+          "ip": 94,
+          "line": 62
+        },
+        {
+          "ip": 97,
+          "line": 63
+        },
+        {
+          "ip": 105,
+          "line": 67
+        },
+        {
+          "ip": 107,
+          "line": 68
+        },
+        {
+          "ip": 115,
+          "line": 72
+        },
+        {
+          "ip": 117,
+          "line": 73
+        },
+        {
+          "ip": 123,
+          "line": 77
+        },
+        {
+          "ip": 140,
+          "line": 84
+        },
+        {
+          "ip": 145,
+          "line": 87
+        },
+        {
+          "ip": 150,
+          "line": 88
+        },
+        {
+          "ip": 158,
+          "line": 89
+        },
+        {
+          "ip": 163,
+          "line": 90
+        },
+        {
+          "ip": 167,
+          "line": 91
+        },
+        {
+          "ip": 177,
+          "line": 97
+        },
+        {
+          "ip": 180,
+          "line": 98
+        },
+        {
+          "ip": 182,
+          "line": 102
+        },
+        {
+          "ip": 218,
+          "line": 123
+        },
+        {
+          "ip": 226,
+          "line": 124
+        },
+        {
+          "ip": 231,
+          "line": 125
+        },
+        {
+          "ip": 236,
+          "line": 126
+        },
+        {
+          "ip": 251,
+          "line": 130
+        },
+        {
+          "ip": 303,
+          "line": 139
+        },
+        {
+          "ip": 308,
+          "line": 142
+        },
+        {
+          "ip": 319,
+          "line": 158
+        },
+        {
+          "ip": 323,
+          "line": 159
+        },
+        {
+          "ip": 327,
+          "line": 160
+        },
+        {
+          "ip": 334,
+          "line": 164
+        },
+        {
+          "ip": 336,
+          "line": 165
+        },
+        {
+          "ip": 350,
+          "line": 169
+        },
+        {
+          "ip": 354,
+          "line": 170
+        },
+        {
+          "ip": 362,
+          "line": 173
+        },
+        {
+          "ip": 367,
+          "line": 174
+        },
+        {
+          "ip": 372,
+          "line": 175
+        },
+        {
+          "ip": 376,
+          "line": 176
+        },
+        {
+          "ip": 385,
+          "line": 180
+        },
+        {
+          "ip": 389,
+          "line": 181
+        }
+      ]
+    },
+    "compiler": {
+      "name": "cashc",
+      "version": "0.13.0-next.1"
+    },
+    "updatedAt": "2025-11-22T19:28:10.262Z"
+  }
